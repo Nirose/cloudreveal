@@ -31,7 +31,7 @@ for req in sub:
             print(ip, host, addr, asn)
     except socket.error as e:
         # print('Invalid Subdomain: ', e)
-        if args.log:
-            log = {host: ip}
-            logs.update(log)
-            print('Log: ', logs)
+        log = {host: ip}
+        logs.update(log)
+if args.log:
+    print('Log: ', logs)

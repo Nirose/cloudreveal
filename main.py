@@ -1,37 +1,63 @@
-import requests
 import socket
 from argparse import ArgumentParser
-# dom = 'couponscorpion.com'
+import http.client
+
+# Add arguments for options
 parser = ArgumentParser()
 parser.add_argument("-d", "--domain",
                     help="the domain to check, Usage: .py -d google.com", default='couponscorpion.com', required=True)
 parser.add_argument("-l", "--log",
-                    help="show the log;is disabled by default, Usage: .py -l", default=False)
+                    help="show the log;is disabled by default, Usage: .py -l", default=False, action='store_true')
 args = parser.parse_args()
-sub = ['www', 'server', 'cpanel', 'webmail', 'mail', 'cdn', 'web']
+
+# Subdomains for checking direct connection to the server bypassing the cloudflare
+subs = ['www', 'server', 'cpanel', 'webmail',
+        'mail', 'cdn', 'web', 'ftp', 'direct', 'ezmail', 'webdisk', 'amp']
+
+# Store the found IPs
 ips = []
+# Logs to check every subdomain checked for IP and information
 logs = dict()
-for req in sub:
+
+# Get ASN data from hackertarget API
+
+
+def getASN(ip):
+    conn = http.client.HTTPSConnection("api.hackertarget.com")
+    conn.request("GET", "/aslookup/?q="+ip)
+    res = conn.getresponse()
+    data = res.read()
+
+    return data.decode("utf-8")
+
+
+for sub in subs:
     # print (socket.gethostname())
-    host = str(req+'.'+args.domain)
+    ip = False
+    subd = str(sub+'.'+args.domain)
     try:
-        ip = socket.gethostbyname(host)
+        ip = socket.gethostbyname(subd)
         # print(ip)
-        log = {host: ip}
+        log = {subd: ip}
         logs.update(log)
-        ips.extend(str(ip))
         if ip not in ips:
+            ips.append(str(ip))
             try:
                 addr = str(socket.gethostbyaddr(ip)[0])
             except socket.error as e:
                 addr = 'N/A'
-            re = requests.get('https://api.hackertarget.com/aslookup/?q='+ip)
-            req = str(re.content).split('","')
-            asn = req[3]
-            print(ip, host, addr, asn)
+            dtext = getASN(ip)
+            req = dtext.split('","')
+            asn = '"'+req[3]
+            print(ip, subd, addr, asn)
     except socket.error as e:
         # print('Invalid Subdomain: ', e)
-        log = {host: ip}
-        logs.update(log)
+        if ip:
+            log = {subd: ip}
+            logs.update(log)
+        else:
+            log = {subd: 'N/A'}
+            logs.update(log)
 if args.log:
     print('Log: ', logs)
+    print(ips)

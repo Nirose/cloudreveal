@@ -10,9 +10,6 @@ parser.add_argument("-l", "--log",
                     help="show the log;is disabled by default, Usage: .py -l", default=False, action='store_true')
 args = parser.parse_args()
 
-# Subdomains for checking direct connection to the server bypassing the cloudflare
-subs = ['www', 'server', 'cpanel', 'webmail',
-        'mail', 'cdn', 'web', 'ftp', 'direct', 'ezmail', 'webdisk', 'amp']
 
 # Store the found IPs
 ips = []
@@ -31,10 +28,17 @@ def getASN(ip):
     return data.decode("utf-8")
 
 
-for sub in subs:
+# Get subdomains for checking direct connection to the server bypassing the cloudflare
+subs = []
+f = open('list.txt', 'r')
+for line in f:
+    subs.append(line)
+f.close()
+
+for s in subs:
     # print (socket.gethostname())
     ip = False
-    subd = str(sub+'.'+args.domain)
+    subd = str(s.strip()+'.'+args.domain)
     try:
         ip = socket.gethostbyname(subd)
         # print(ip)

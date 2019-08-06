@@ -12,7 +12,7 @@ The results depend on your understanding of what you are looking for
 
 `104.31.91.30 www.domain.com N/A "CLOUDFLARENET - Cloudflare, Inc., US"`
 
-`1**.2**.9*.5* webmail.domain.com brandonmckay.com "Some Hosting Company"`
+`1**.2**.9*.5* webmail.domain.com somehostname.com "Some Hosting Company"`
 
 ### Classification
 |IP|subdomain|hostname|Server ASN|

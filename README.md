@@ -1,5 +1,5 @@
 # Reveal IP behind CDN servers by checking well-known subdomains
-Check and Prevent against DNS enumeration to prevent your original IP being found through subdomain enumeration.
+Check and Prevent against origin IP being revealed through subdomain enumeration.
 
 ## Usage
 * Store the subdomains in `list.txt`

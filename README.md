@@ -7,7 +7,7 @@ Check and Prevent against origin IP being revealed through subdomain enumeration
 
     `main.py -d domain.com`
 
-## Results
+## Resultsmain
 The results depend on your understanding of what you are looking for
 
 `104.31.91.30 www.domain.com N/A "CLOUDFLARENET - Cloudflare, Inc., US"`

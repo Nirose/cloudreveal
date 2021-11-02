@@ -5,7 +5,7 @@ Check and Prevent against origin IP being revealed through subdomain enumeration
 * Store the subdomains in `list.txt`
 * Run the command (without any suddomains, not even `www`)
 
-    `main.py -d domain.com`
+    `python3 main.py -d domain.com`
 
 ## Resultsmain
 The results depend on your understanding of what you are looking for
